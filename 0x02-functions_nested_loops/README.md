@@ -1,1 +1,1 @@
-0x03. Shell, init files, variables and expansions
+0x02. C - Functions, nested loops

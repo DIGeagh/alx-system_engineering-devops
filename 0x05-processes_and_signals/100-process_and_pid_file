@@ -1,35 +1,27 @@
 #!/usr/bin/env bash
-# This script displays "To infinity and beyond" indefinitely
-# and handles signals SIGTERM, SIGINT, SIGQUIT gracefully.
-
-# Function to handle SIGTERM signal
-function handle_sigterm() {
-  echo "I hate the kill command"
-}
-
-# Function to handle SIGINT signal
-function handle_sigint() {
-  echo "Y U no love me?!"
-}
+# Creates the file /var/run/myscript.pid containing its PID
+# Displays To infinity and beyond indefinitely
+# Displays I hate the kill command when receiving a SIGTERM signal
+# Displays Y U no love me?! when receiving a SIGINT signal
+# Deletes the file /var/run/myscript.pid and terminates itself when receiving a SIGQUIT or SIGTERM signal.
 
 # Function to handle SIGQUIT and SIGTERM signals
-function handle_sigquit_sigterm() {
-  echo "Deleting PID file and terminating..."
-  rm -f /var/run/myscript.pid
-  exit 0
+function terminator() {
+  rm /var/run/myscript.pid
+  exit
 }
 
-# Trap the SIGTERM signal to call handle_sigterm function
-trap handle_sigterm SIGTERM
-
-# Trap the SIGINT signal to call handle_sigint function
-trap handle_sigint SIGINT
-
-# Trap the SIGQUIT and SIGTERM signals to call handle_sigquit_sigterm function
-trap handle_sigquit_sigterm SIGQUIT SIGTERM
+# Trap the SIGQUIT and SIGTERM signals to call the terminator function
+trap terminator SIGQUIT SIGTERM
 
 # Create the file /var/run/myscript.pid containing its PID
 echo "$$" > /var/run/myscript.pid
+
+# Trap the SIGINT signal to display "Y U no love me?!"
+trap 'echo "Y U no love me?!"' SIGINT
+
+# Trap the SIGTERM signal to display "I hate the kill command"
+trap 'echo "I hate the kill command" && terminator' SIGTERM
 
 # Display "To infinity and beyond" indefinitely
 while true

@@ -12,7 +12,7 @@ function handle_sigint() {
   echo "Y U no love me?!"
 }
 
-# Function to handle SIGQUIT or SIGTERM signal
+# Function to handle SIGQUIT and SIGTERM signals
 function handle_sigquit_sigterm() {
   echo "Deleting PID file and terminating..."
   rm -f /var/run/myscript.pid

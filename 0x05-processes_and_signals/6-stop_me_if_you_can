@@ -1,22 +1,4 @@
 #!/usr/bin/env bash
-# This script displays "To infinity and beyond" indefinitely with a sleep of 2 seconds.
+# Kills the 4-to_infinity_and_beyond process.
 
-# Function to stop the script gracefully
-function stop_gracefully() {
-  echo "Terminated"
-  exit 0
-}
-
-# Trap the SIGTERM signal to call the stop_gracefully function
-trap stop_gracefully SIGTERM
-
-# Loop until the signal file exists
-while true; do
-  echo "To infinity and beyond"
-  sleep 2
-
-  # Check if the signal file exists and exit if it does
-  if [ -f "stop_signal" ]; then
-    stop_gracefully
-  fi
-done
+pkill -f 4-to_infinity_and_beyond

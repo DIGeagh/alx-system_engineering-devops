@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
-# Kills the 4-to_infinity_and_beyond processi.
+# This script displays "To infinity and beyond indefinitely" with a sleep of 2 seconds.
 
-kill "$(pgrep -f 4-to_infinity_and_beyond)"
+# Trap the SIGINT signal (Ctrl+C) to stop the script gracefully
+trap 'exit 0' SIGINT
+
+while true; do
+  echo "To infinity and beyond indefinitely"
+  sleep 2
+done

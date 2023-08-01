@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
-# Displays a list of currently running processes containing the bash keyword.
-
-ps -aux | grep bash
+#!/usr/bin/env ruby
+puts ARGV[0].scan(/htn/).join
+puts ARGV[0].scan(/hbtn/).join

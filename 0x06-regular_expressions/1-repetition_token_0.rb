@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-# Displays a list of currently running processes.
-# Shows all processes, for all users, including those, which might not have a TTY.
-
-ps -auxf
+#!/usr/bin/env ruby
+puts ARGV[0].scan(/htn/).join
+puts ARGV[0].scan(/hbtn/).join

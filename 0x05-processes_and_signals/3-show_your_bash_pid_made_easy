@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# Displays "To infinity and beyond" indefinitely,
-# With a "sleep 2" in between each iteration.
+# This script displays the PID and process name of processes containing the word "bash."
 
-while true
-do
-  echo "To infinity and beyond"
-  sleep 2
+# Use pgrep to find the PIDs of processes containing the word "bash"
+pids=$(pgrep bash)
+
+# Loop through each PID and display its process name
+for pid in $pids; do
+  process_name=$(cat "/proc/$pid/comm")
+  echo "$pid $process_name"
 done

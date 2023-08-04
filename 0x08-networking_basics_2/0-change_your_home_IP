@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# This script pings an IP address passed as an argument.
+# This script configures an Ubuntu server with custom DNS resolutions for localhost and facebook.com.
 
-# Check if an argument is provided
-if [[ -z "$1" ]]; then
-    echo "Usage: $0 {IP_ADDRESS}"
-    exit 1
-fi
+# Define the custom DNS resolutions
+LOCALHOST_IP="127.0.0.2"
+FACEBOOK_IP="8.8.8.8"
 
-# Ping the IP address 5 times
-ping -c 5 "$1"
+# Modify the /etc/hosts file to set localhost to 127.0.0.2
+sudo sed -i "s/^127\.0\.0\.1\s*localhost$/127.0.0.1\tlocalhost ${LOCALHOST_IP}/" /etc/hosts
+
+# Modify the /etc/hosts file to set facebook.com to 8.8.8.8
+sudo sed -i "s/^.*\sfacebook\.com$/8.8.8.8\tfacebook.com/" /etc/hosts

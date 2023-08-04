@@ -5,8 +5,20 @@
 LOCALHOST_IP="127.0.0.2"
 FACEBOOK_IP="8.8.8.8"
 
-# Modify the /etc/hosts file to set localhost to 127.0.0.2
-sudo sed -i "s/^127\.0\.0\.1\s*localhost$/127.0.0.1\tlocalhost ${LOCALHOST_IP}/" /etc/hosts
+# Check if the existing localhost entry is present and modify it, otherwise add a new entry
+if grep -qP '^127\.0\.0\.1\s+localhost(\s|$)' /etc/hosts; then
+    sudo awk '/^127\.0\.0\.1\s+localhost/ {$2 = "localhost " ENVIRON["LOCALHOST_IP"]} {print}' LOCALHOST_IP="$LOCALHOST_IP" /etc/hosts | sudo tee /tmp/hosts_temp
+else
+    echo "127.0.0.1 localhost $LOCALHOST_IP" | sudo tee -a /tmp/hosts_temp
+fi
 
-# Modify the /etc/hosts file to set facebook.com to 8.8.8.8
-sudo sed -i "s/^.*\sfacebook\.com$/8.8.8.8\tfacebook.com/" /etc/hosts
+# Check if the existing facebook.com entry is present and modify it, otherwise add a new entry
+if grep -qP '\bfacebook\.com\b' /etc/hosts; then
+    sudo awk '{gsub(/\bfacebook\.com\b/, ENVIRON["FACEBOOK_IP"]); print}' FACEBOOK_IP="$FACEBOOK_IP" /tmp/hosts_temp | sudo tee /etc/hosts
+else
+    echo "$FACEBOOK_IP facebook.com" | sudo tee -a /tmp/hosts_temp > /dev/null
+    sudo cp /tmp/hosts_temp /etc/hosts
+fi
+
+# Remove temporary file
+sudo rm -f /tmp/hosts_temp

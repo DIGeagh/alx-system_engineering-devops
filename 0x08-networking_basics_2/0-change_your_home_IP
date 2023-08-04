@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script configures the DNS resolution of localhost and facebook.com on an Ubuntu server.
+
+# Update /etc/hosts file to set localhost to 127.0.0.2
+echo "127.0.0.2 localhost" | sudo tee -a /etc/hosts
+
+# Update /etc/hosts file to set facebook.com to 8.8.8.8
+echo "8.8.8.8 facebook.com" | sudo tee -a /etc/hosts

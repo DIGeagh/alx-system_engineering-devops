@@ -1,24 +1,14 @@
 #!/usr/bin/env bash
-# This script configures an Ubuntu server with custom DNS resolutions for localhost and facebook.com.
-
-# Define the custom DNS resolutions
-LOCALHOST_IP="127.0.0.2"
-FACEBOOK_IP="8.8.8.8"
-
-# Check if the existing localhost entry is present and modify it, otherwise add a new entry
-if grep -qP '^127\.0\.0\.1\s+localhost(\s|$)' /etc/hosts; then
-    sudo awk '/^127\.0\.0\.1\s+localhost/ {$2 = "localhost " ENVIRON["LOCALHOST_IP"]} {print}' LOCALHOST_IP="$LOCALHOST_IP" /etc/hosts | sudo tee /tmp/hosts_temp
+# a Bash script that configures a Ubuntu server
+sudo cp /etc/hosts ~/hosts.new
+if grep -q '^.*localhost$' ~/hosts.new; then
+    sudo sed -i 's/^.*localhost$/127.0.0.2 localhost/' ~/hosts.new
 else
-    echo "127.0.0.1 localhost $LOCALHOST_IP" | sudo tee -a /tmp/hosts_temp
+    sudo sed -i '1s/^/127.0.0.2 localhost\n/' ~/hosts.new
 fi
-
-# Check if the existing facebook.com entry is present and modify it, otherwise add a new entry
-if grep -qP '\bfacebook\.com\b' /etc/hosts; then
-    sudo awk '{gsub(/\bfacebook\.com\b/, ENVIRON["FACEBOOK_IP"]); print}' FACEBOOK_IP="$FACEBOOK_IP" /tmp/hosts_temp | sudo tee /etc/hosts
+if grep -q '^.*facebook.com$' ~/hosts.new; then
+    sudo sed -i 's/^.*facebook.com$/8.8.8.8 facebook.com/' ~/hosts.new
 else
-    echo "$FACEBOOK_IP facebook.com" | sudo tee -a /tmp/hosts_temp > /dev/null
-    sudo cp /tmp/hosts_temp /etc/hosts
+    sudo sed -i '1s/^/8.8.8.8 facebook.com\n/' ~/hosts.new
 fi
-
-# Remove temporary file
-sudo rm -f /tmp/hosts_temp
+sudo cp -f ~/hosts.new /etc/hosts

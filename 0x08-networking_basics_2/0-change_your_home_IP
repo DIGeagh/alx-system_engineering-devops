@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# This script configures the DNS resolution of localhost and facebook.com on an Ubuntu server.
+# This script configures an Ubuntu server with custom DNS resolutions for localhost and facebook.com.
 
-# Update /etc/hosts file to set localhost to 127.0.0.2
-echo "127.0.0.2 localhost" | sudo tee -a /etc/hosts
+# Define the custom DNS resolutions
+LOCALHOST_IP="127.0.0.2"
+FACEBOOK_IP="8.8.8.8"
 
-# Update /etc/hosts file to set facebook.com to 8.8.8.8
-echo "8.8.8.8 facebook.com" | sudo tee -a /etc/hosts
+# Modify the /etc/hosts file to set localhost to 127.0.0.2
+sudo sed -i "/^127.0.0.1/s/$/ ${LOCALHOST_IP}/" /etc/hosts
+
+# Modify the /etc/hosts file to set facebook.com to 8.8.8.8
+sudo sed -i "/^.*facebook.com/s/$/ ${FACEBOOK_IP}/" /etc/hosts

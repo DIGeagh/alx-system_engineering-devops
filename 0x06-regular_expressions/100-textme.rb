@@ -1,26 +1,17 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env bash
 
-# Check if the script is called with an argument
-if ARGV.empty?
-  puts "Usage: #{$0} <log_file>"
-  exit 1
-end
+# Function to extract information from log entries
+extract_info() {
+    # Regular expression to match the required fields
+    local regex='\[from:(.*?)\] \[to:(.*?)\] \[flags:(.*?)\]'
+    [[ $1 =~ $regex ]] && echo "${BASH_REMATCH[1]},${BASH_REMATCH[2]},${BASH_REMATCH[3]}"
+}
 
-# Get the first argument passed to the script (log file path)
-log_file = ARGV[0]
+# Check if the script was given the correct number of arguments
+if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 '<log entry>'"
+    exit 1
+fi
 
-# Define the regular expression to extract sender, receiver, and flags
-regex = /\[from:(?<sender>[^\]]+)\] \[to:(?<receiver>[^\]]+)\] \[flags:(?<flags>[^\]]+)\]/
-
-# Read the log file and extract the required information
-File.open(log_file, 'r') do |file|
-  file.each_line do |line|
-    match_data = line.match(regex)
-    if match_data
-      sender = match_data[:sender]
-      receiver = match_data[:receiver]
-      flags = match_data[:flags]
-      puts "#{sender},#{receiver},#{flags}"
-    end
-  end
-end
+# Call the function with the provided log entry
+extract_info "$1"

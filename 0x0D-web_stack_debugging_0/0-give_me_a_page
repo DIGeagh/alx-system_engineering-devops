@@ -1,0 +1,23 @@
+# Start the Docker container and expose port 8080
+docker run -p 8080:80 -d -it holbertonschool/265-0
+
+# Check the container ID (you can also use 'docker ps' to find it)
+container_id=$(docker ps -q)
+
+# Connect to the Docker container
+docker exec -it $container_id /bin/bash
+
+# Now, you are inside the container. Check if Apache is running
+service apache2 status
+
+# If Apache is not running, start it
+service apache2 start
+
+# Check if Apache is now serving the expected content
+curl 0:80
+
+# If it's not working, you may need to create an HTML file with the content
+echo "Hello Holberton" > /var/www/html/index.html
+
+# Exit the container
+exit

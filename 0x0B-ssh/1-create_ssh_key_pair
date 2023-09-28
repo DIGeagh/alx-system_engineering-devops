@@ -6,7 +6,7 @@ key_name="school"
 passphrase="betty"
 
 # Generate the RSA key pair with 4096 bits and a passphrase
-ssh-keygen -t rsa -b 4096 -f ~/.ssh/"$key_name" -N "$passphrase"
+ssh-keygen -t rsa -b 4096 -f "$key_name" -N "$passphrase"
 
 # Check if the key pair was created successfully
 if [ $? -eq 0 ]; then

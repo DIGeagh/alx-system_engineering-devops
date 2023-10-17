@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+sed -i 's/user www-data;/user nginx/' /etc/nginx/nginx.conf
+sed -i 's/listen 80;/listen 8080;/' /etc/nginx/sites-available/default
+rm -f /etc/nginx/sites-enabled/default
+nginx -s reload

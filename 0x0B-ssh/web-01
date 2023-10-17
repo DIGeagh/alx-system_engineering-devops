@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-server 325290-web-01 login
+# Connects to server 107.23.105.227 with key in ~/.ssh/school
 
-eval $("ssh-agent")
-ssh-add ~/.ssh/school
-
-ssh ubuntu@107.23.105.227
+ssh -i ~/.ssh/school ubuntu@107.23.105.227

@@ -1,39 +1,29 @@
 #!/usr/bin/python3
-"""
-Using https://jsonplaceholder.typicode.com
-gathers data from API and exports it to JSON file
-Implemented using recursion
-"""
-import json
-import requests
-import sys
+"""Exports data in the JSON format"""
 
-API = "https://jsonplaceholder.typicode.com"
+if __name__ == "__main__":
 
-if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        try:
-            id = int(sys.argv[1])
-        except ValueError:
-            print("Invalid employee ID. Please provide a valid integer.")
-            sys.exit(1)
+    import json
+    import requests
+    import sys
 
-        user_res = requests.get(f'{API}/users/{id}').json()
-        todos_res = requests.get(f'{API}/todos?userId={id}').json()
+    userId = sys.argv[1]
+    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
+                        .format(userId))
+    todos = requests.get('https://jsonplaceholder.typicode.com/todos')
+    todos = todos.json()
 
-        user_name = user_res.get('username')
-        user_data = {
-            str(id): [
-                {
-                    "task": todo["title"],
-                    "completed": todo["completed"],
-                    "username": user_name
-                }
-                for todo in todos_res
-            ]
-        }
+    todoUser = {}
+    taskList = []
 
-        with open(f"{id}.json", 'w') as json_file:
-            json.dump(user_data, json_file)
-    else:
-        print("Usage: python3 script.py <employee_id>")
+    for task in todos:
+        if task.get('userId') == int(userId):
+            taskDict = {"task": task.get('title'),
+                        "completed": task.get('completed'),
+                        "username": user.json().get('username')}
+            taskList.append(taskDict)
+    todoUser[userId] = taskList
+
+    filename = userId + '.json'
+    with open(filename, mode='w') as f:
+        json.dump(todoUser, f)

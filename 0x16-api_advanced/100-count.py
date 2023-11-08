@@ -23,11 +23,12 @@ def count_words(subreddit, word_list, after=None, count_dict=None):
             for post in posts:
                 title = post['data']['title'].lower()
                 for word in word_list:
-                    if word.lower() in title:
+                    occurrences = title.count(word.lower())
+                    if occurrences > 0:
                         if word in count_dict:
-                            count_dict[word] += 1
+                            count_dict[word] += occurrences
                         else:
-                            count_dict[word] = 1
+                            count_dict[word] = occurrences
 
             after = data['data']['after']
             if after is not None:

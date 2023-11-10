@@ -1,1 +1,8 @@
-
+U^M^M
+^@^@^@^@ø§MeÐ^B^@^@ã^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^@^B^@^@^@@^@^@^@s^X^@^@^@d^@Z^@d^Ad^Bl^AZ^Ad^Cd^D<84>^@Z^Bd^BS^@)^Ez:Function to query subscribers on a given Reddit subreddit.é^@^@^@^@Nc^A^@^@^@^@^@^@^@^@^@^@^@^E^@^@^@^H^@^@^@C^@^@^@sp^@^@^@zLd^A ^@|^@¡^A}^Ad^Bd^Ci^A}^Bt^Aj^B|^A|^Bd^Dd^E<8d>^C}^C|^Cj^Cd^Fk^Br4W^@d^GS^@|^C ^D¡^@ ^Bd^H¡^A}^D|^D ^Bd ¡^AW^@S^@^D^@t^Ek
+rj^A^@^A^@^A^@t^Fd
+<83>^A^A^@Y^@d^GS^@X^@d^KS^@)^Lz<Return the total number of subscribers on a given subreddit.z&https://www.reddit.com/r/{}/about.jsonz
+User-AgentzFlinux:0x16.api.advanced:v1.0.0            (by /u/Large_Alternative_30)F)^BÚ^GheadersZ^Oallow_redirectsi<94>^A^@^@r^A^@^@^@Ú^DdataZ^Ksubscribersz    Not FoundN)^GÚ^FformatÚ^HrequestsÚ^CgetZ^Kstatus_codeZ^DjsonÚ   ExceptionÚ^Eprint)^EZ   subredditZ^Curlr^B^@^@^@Z^HresponseZ^Gresults©^@r       ^@^@^@ú:/alx-system_engineering-devops/0x16-api_advanced/0-subs.pyÚ^Unumber_of_subscribers^F^@^@^@s^Z^@^@^@^@^B^B^A
+^B^B^@^Bÿ^D^D^P^A
+^A^F^A^N^A^L^A^N^A^H^Ar^K^@^@^@)^CÚ^G__doc__r^E^@^@^@r^K^@^@^@r ^@^@^@r ^@^@^@r ^@^@^@r
+^@^@^@Ú^H<module>^B^@^@^@s^D^@^@^@^D^A^H^C

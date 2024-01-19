@@ -1,49 +1,31 @@
 #!/usr/bin/python3
+
 """
-Function to query the Reddit API and print the titles of the first 10 hot posts
-listed for a given subreddit.
+prints the titles of the first 10 hot posts listed for a given subreddit
 """
-import requests
+
+from requests import get
+
 
 def top_ten(subreddit):
     """
-    Print the titles of the first 10 hot posts for a given subreddit.
-
-    Args:
-        subreddit (str): The name of the subreddit.
-
-    Returns:
-        None
+    function that queries the Reddit API and prints the titles of the first
+    10 hot posts listed for a given subreddit
     """
-    try:
-        url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10"
-        headers = {
-            "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/Large_Alternative_30)"
+
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+    headers = {
+        "User-Agent": "YourUserAgent"
         }
-
-        response = requests.get(url, headers=headers, allow_redirects=False)
-
-        print(f"Status Code: {response.status_code}")
-        print(f"Response Content: {response.text}")
-
-        if response.status_code != 200:
-            print("Invalid subreddit or no posts found.")
-            return
-
-        data = response.json().get("data", {}).get("children", [])
-
-        if not data:
+    response = get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        if 'data' in data and 'children' in data['data']:
+            posts = data['data']['children']
+            for post in posts:
+                title = post['data']['title']
+                print(title)
+        else:
             print("No posts found.")
-            return
-
-        for post in data:
-            title = post.get("data", {}).get("title")
-            print(title)
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-
-# Example usage
-if __name__ == "__main__":
-    subreddit_name = input("Enter the subreddit name: ")
-    top_ten(subreddit_name)
+    else:
+        print(None)

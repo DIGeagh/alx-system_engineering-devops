@@ -19,3 +19,9 @@ def number_of_subscribers(subreddit):
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
         return 0
+
+# Example usage
+if __name__ == "__main__":
+    subreddit_name = input("Enter the subreddit name: ")
+    subscribers_count = number_of_subscribers(subreddit_name)
+    print(f"The number of subscribers for '{subreddit_name}' is: {subscribers_count}")

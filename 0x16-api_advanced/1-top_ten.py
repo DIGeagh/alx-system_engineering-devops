@@ -23,6 +23,9 @@ def top_ten(subreddit):
 
         response = requests.get(url, headers=headers, allow_redirects=False)
 
+        print(f"Status Code: {response.status_code}")
+        print(f"Response Content: {response.text}")
+
         if response.status_code != 200:
             print("Invalid subreddit or no posts found.")
             return

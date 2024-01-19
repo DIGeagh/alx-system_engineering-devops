@@ -1,17 +1,21 @@
-#!/bin/bash
+#!/usr/bin/python3
+"""Function to query subscribers on a given Reddit subreddit."""
+import requests
 
-# Function to get the number of subscribers for a given subreddit
-number_of_subscribers() {
-    subreddit=$1
-    url="https://www.reddit.com/r/${subreddit}/about.json"
-    user_agent="my_user_agent"  # Replace 'my_user_agent' with your custom User-Agent
-
-    subscribers=$(curl -s -A "$user_agent" "$url" | python3 -c 'import sys, json; data=json.load(sys.stdin); print(data["data"]["subscribers"] if "data" in data and "subscribers" in data["data"] else 0)')
-
-    echo "$subscribers"
-}
-
-# Example usage
-read -p "Enter the subreddit name: " subreddit_name
-subscribers_count=$(number_of_subscribers "$subreddit_name")
-echo "The number of subscribers for '$subreddit_name' is: $subscribers_count"
+def number_of_subscribers(subreddit):
+    """Return the total number of subscribers on a given subreddit."""
+    try:
+        url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
+        headers = {
+            "User-Agent": "linux:0x16.api.advanced:v1.0.0 (by /u/Large_Alternative_30)"
+        }
+        response = requests.get(url, headers=headers, allow_redirects=False)
+        
+        if response.status_code == 404:
+            return 0
+        
+        results = response.json().get("data")
+        return results.get("subscribers")
+    except requests.exceptions.RequestException as e:
+        print(f"Error: {e}")
+        return 0

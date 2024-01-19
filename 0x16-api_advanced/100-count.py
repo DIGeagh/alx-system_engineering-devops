@@ -1,56 +1,53 @@
 #!/usr/bin/python3
-"""
-100-count
-"""
+""" raddit api"""
+
+from collections import Counter
 import requests
 
-def count_words(subreddit, word_list, after=None, count_dict=None):
-    if count_dict is None:
-        count_dict = {}
 
-    url = f'https://www.reddit.com/r/{subreddit}/hot.json'
-    headers = {'User-Agent': 'MyBot/1.0'}
+def count_words(subreddit, word_list, hot_list=None, after=None):
+    """count all words"""
 
-    params = {'limit': 100, 'after': after}
-    
-    try:
-        response = requests.get(url, headers=headers, params=params)
+    if hot_list is None:
+        hot_list = []
 
-        if response.status_code == 200:
-            data = response.json()
+    url = "https://www.reddit.com/r/{}/hot.json?limit=25".format(subreddit)
+    if after:
+        url += "&after={}".format(after)
+    headers = {
+        "User-Agent": "YourUserAgent"
+        }
+    request = requests.get(url, headers=headers)
+
+    if request.status_code == 200:
+        data = request.json()
+        if 'data' in data and 'children' in data['data']:
             posts = data['data']['children']
-
             for post in posts:
                 title = post['data']['title'].lower()
-                for word in word_list:
-                    if word.lower() in title:
-                        if word in count_dict:
-                            count_dict[word] += 1
-                        else:
-                            count_dict[word] = 1
+                hot_list.append(title)
 
             after = data['data']['after']
+
             if after is not None:
-                return count_words(subreddit, word_list, after, count_dict)
+                return count_words(subreddit, word_list, hot_list, after)
             else:
-                # Sort the results in descending order by count and then alphabetically
-                sorted_count = sorted(count_dict.items(), key=lambda x: (-x[1], x[0]))
-                for word, count in sorted_count:
-                    print(f"{word}: {count}")
+                # Combine the hot_list into a single string for word counting
+                all_titles = ' '.join(hot_list)
+                word_counter = Counter(all_titles.split())
+                word_counts = {}
+
+                for word in word_list:
+                    count = word_counter.get(word, 0)
+                    word_counts[word] = count
+
+                sorted_word_counts = sorted(
+                        word_counts.items(), key=lambda x: (-x[1], x[0]))
+                for word, count in sorted_word_counts:
+                    if count > 0:
+                        print(f"{word}: {count}")
+
         else:
             return
-
-    except Exception:
-        return
-
-if __name__ == '__main__':
-    import sys
-
-    if len(sys.argv) < 3:
-        print("Usage: {} <subreddit> <list of keywords>".format(sys.argv[0]))
-        print("Ex: {} programming 'python java javascript'".format(sys.argv[0]))
     else:
-        subreddit = sys.argv[1]
-        keywords = [x for x in sys.argv[2].split()]
-        count_words(subreddit, keywords)
-
+        return
